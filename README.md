@@ -24,7 +24,7 @@ Other potential queries that this database can be used to answer:
 survivoR-database
 ├─ data 
 │  ├─ castaways.csv
-challenges.csv
+│  ├─challenges.csv
 │  ├─ seasons.csv
 │  └─ votes.csv
 ├─ .gitignore
