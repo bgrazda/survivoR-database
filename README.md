@@ -40,6 +40,8 @@ survivoR-database
 ```
 
 ## Schema
+<img width="390" alt="Screenshot 2025-05-15 at 12 54 57 PM" src="https://github.com/user-attachments/assets/cdac191a-dc32-403f-917f-ac3869df226d" />
+
 
 ## Data Access
 
