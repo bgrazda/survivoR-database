@@ -20,6 +20,25 @@ Other potential queries that this database can be used to answer:
 
 ## Repository Structure
 
+```
+survivoR-database
+├─ data 
+│  ├─ castaways.csv
+challenges.csv
+│  ├─ seasons.csv
+│  └─ votes.csv
+├─ .gitignore
+├─ README.md
+├─ survivoR-database.Rproj
+├─ survivor-data-cleaning.qmd
+├─ survivor-database.db
+├─ survivor-query.qmd
+├─ survivor-schema.sql
+└─ images
+   ├─ Jeff-probst-jpg
+   └─ survivor-query.png
+```
+
 ## Schema
 
 ## Data Access
