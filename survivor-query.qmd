@@ -84,34 +84,41 @@ showtext_auto()
 ```
 
 
-```{r}
+```{r, fig.height= 4, fig.width= 6}
 # Plot data
 
-ggplot(occupation_query, aes(x = wins, y = fct_reorder(occupation, wins, .desc = FALSE))) +
+query_viz <- ggplot(occupation_query, aes(x = wins, y = fct_reorder(occupation, wins, .desc = FALSE))) +
   geom_col(fill = "#1f77b4") +
   geom_text(aes(label = occupation), 
             hjust = 1,          # aligns text inside bar, to the left side of bar end
             color = "white",      # text color to contrast with bar fill
-            size = 3,
+            size = 12,
             family ='Survivant') +         # adjust text size as needed
   theme_classic() +
   labs(
     x = 'Challenge Wins',
     y = 'Occupation',               # no y-axis label since text is inside bars
-    title = 'Occupations with the most wins in \nindividual and group immunity challenges',
+    title = 'Occupations with the most immunity challenge wins',
     subtitle = 'Survivor Data From Seasons 1-47'
   ) +
   theme(
     legend.position = 'none',
-    axis.text.x = element_text(family = 'Survivant', color = 'white', size = 10),
+    axis.text.x = element_text(family = 'Survivant', color = 'white', size = 20),
   axis.text.y = element_blank(),
-    title = element_text(family = 'Survivant', color = 'white'),
+    title = element_text(family = 'Survivant', color = 'white', size = 30),
     plot.background = element_rect(fill = 'black', color = NA),
     panel.background = element_rect(fill = 'black', color = NA),
   ) +
   scale_x_continuous(breaks = scales::pretty_breaks())
 
+
+ggsave(query_viz, filename = 'survivor_query.png', height = 4, width = 6)
 ```
+
+```{r}
+DBI::dbDisconnect(conn, shutdown = TRUE)
+```
+
 
 
 
