@@ -40,16 +40,23 @@ survivoR-database
 ```
 
 ## Schema
+Below is a diagram that outlines the structure and organization of the database. It contains 4 tables: seasons, castaways, challenges and votes. Schema created using dbdiagram.io.
+
 <img width="390" alt="Screenshot 2025-05-15 at 12 54 57 PM" src="https://github.com/user-attachments/assets/cdac191a-dc32-403f-917f-ac3869df226d" />
 
 
 ## Data Access
 
+The data was accessed from the [survivoR repository](https://github.com/doehm/survivoR)
+
 ## Author
+
+Brooke Grazda
+
+Master of Environmental Data Science
+Bren School of Environmental Sciience & Management
 
 ## Acknowldgements
 
-## 
-
-This database using the survivoR package. Datasets include details about castaways, voting history, challenge resutls, and all 47 seasons. 
+The material for this assignment was presented by TA Annie Adams in the course Databases and Data Management (EDS 213) at the Bren School of Environmental Science & Management, Fall 2024. I'd also like to acknowledge the instructors of this course, Julien Brun and Greg Janée.
 
