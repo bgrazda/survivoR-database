@@ -1,5 +1,6 @@
 # SurvivoR Database
-!(jeff-probst.jpg)[jeff-probst.jpg]
+![jeff-probst](https://github.com/user-attachments/assets/5771e248-d463-4d33-9d7d-ee136f304aef)
+
 
 ## Description
 
