@@ -1,0 +1,53 @@
+---
+title: "SurvivoR Data Cleaning"
+author: "Brooke Grazda"
+format: html
+editor: visual
+---
+
+I will be using the `survivoR` package to retrieve datasets for **season_summary**, **castaways**, **vote history**, **challenge results**.
+
+```{r}
+# install packages
+install.packages("survivoR")
+```
+
+```{r}
+# import libraries
+library(tidyverse)
+library(janitor)
+library(here)
+library(survivoR)
+```
+
+```{r}
+# Read in datasets and store variables for cleaning
+
+# containing summary details of each season of Survivor, including the winner, runner ups and location.
+seasons <- season_summary |> 
+  filter(version == 'US') |> 
+  select(c(version_season, season_name, location, country, winner, winner_id, final_vote, runner_ups)) |> 
+  write.csv('data/seasons.csv', row.names =FALSE)
+
+
+# contains data on each of the players from every season
+castaways <- castaway_details |> 
+  select(c(castaway_id, full_name, occupation, personality_type, gender, date_of_birth, date_of_death)) |> 
+ write_csv('data/castaways.csv')
+
+# contains complete history of all votes casted on survivor including which season and which tribal council and for whom the vote was casted
+votes <- vote_history |> 
+  filter(version == 'US') |> 
+  select(version_season, season_name, season, episode, day,
+         castaway, vote, voted_out) |> 
+  write.csv('data/votes.csv', row.names = FALSE)
+
+# Has results of reward and immunity challenges
+challenges <- challenge_results |> 
+  filter(version == 'US') |> # only want original survivor
+  select(version_season, season_name, season, episode, castaway_id, castaway, challenge_type, result) |> 
+  filter(grepl('Immunity', challenge_type)) |> # Only interested in immunity or immunity with reward challenges
+ write.csv("data/challenges.csv", row.names = FALSE)
+         
+         
+```
