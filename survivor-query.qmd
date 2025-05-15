@@ -1,0 +1,127 @@
+---
+title: "Querying and Visualizing Survivor Data"
+author: 'Brooke Grazda'
+format: html
+editor: visual
+---
+
+## Database Query:
+Which occupations and personality types win the most challenges in survivor? Which personality type is most frequently voted out first?
+What percentage of final tribal councils are majority men vs women?
+
+```{r}
+# read in data and load libraries
+library(tidyverse)
+library(here)
+library(DBI)
+library(duckdb)
+```
+
+```{r}
+# Connect to survivor database 
+conn <- DBI::dbConnect(duckdb::duckdb(),
+                       dbdir="survivor-database.db", read_only = FALSE)
+
+challenges <- survivoR::challenge_summary
+```
+
+
+```{sql, connection = conn}
+-- Which occupations win the most challenges in survivor
+
+
+SELECT Ca.occupation, COUNT(*) AS wins
+FROM Challenges AS Ch
+JOIN Castaways AS Ca
+  ON Ch.castaway_id = Ca.castaway_id
+WHERE Ch.result = 'Won'
+GROUP BY Ca.occupation
+ORDER BY wins DESC
+LIMIT 4;
+-- bartenders have the most amount of challenge wins? 
+```
+
+```{sql, connection = conn}
+SELECT Ca.personality_type, COUNT(*) AS wins
+FROM Challenges AS Ch
+JOIN Castaways AS Ca
+  ON Ch.castaway_id = Ca.castaway_id
+WHERE Ch.result = 'Won'
+GROUP BY Ca.personality_type
+ORDER BY wins DESC
+LIMIT 4;
+-- ENFP has the greatest number of wins in group and individual immunity challenges
+```
+
+```{r}
+# Query database using DBI connection 
+occupation_query <- dbGetQuery(conn,"SELECT Ca.occupation, COUNT(*) AS wins
+FROM Challenges AS Ch
+JOIN Castaways AS Ca
+  ON Ch.castaway_id = Ca.castaway_id
+WHERE Ch.result = 'Won'
+GROUP BY Ca.occupation
+ORDER BY wins DESC LIMIT 12;")
+```
+
+```{r}
+personality_type_query <- dbGetQuery(conn, "SELECT Ca.personality_type, COUNT(*) AS wins
+FROM Challenges AS Ch
+JOIN Castaways AS Ca
+  ON Ch.castaway_id = Ca.castaway_id
+WHERE Ch.result = 'Won'
+GROUP BY Ca.personality_type
+ORDER BY wins DESC
+LIMIT 4;")
+```
+
+```{r}
+library(showtext)
+# use survivor font 
+
+font_add(family = "Survivant", regular = here('fonts', 'Survivant.ttf'))
+showtext_auto()
+```
+
+
+```{r}
+# Plot data
+
+ggplot(occupation_query, aes(x = wins, y = fct_reorder(occupation, wins, .desc = FALSE))) +
+  geom_col(fill = "#1f77b4") +
+  geom_text(aes(label = occupation), 
+            hjust = 1,          # aligns text inside bar, to the left side of bar end
+            color = "white",      # text color to contrast with bar fill
+            size = 3,
+            family ='Survivant') +         # adjust text size as needed
+  theme_classic() +
+  labs(
+    x = 'Challenge Wins',
+    y = 'Occupation',               # no y-axis label since text is inside bars
+    title = 'Occupations with the most wins in \nindividual and group immunity challenges',
+    subtitle = 'Survivor Data From Seasons 1-47'
+  ) +
+  theme(
+    legend.position = 'none',
+    axis.text.x = element_text(family = 'Survivant', color = 'white', size = 10),
+  axis.text.y = element_blank(),
+    title = element_text(family = 'Survivant', color = 'white'),
+    plot.background = element_rect(fill = 'black', color = NA),
+    panel.background = element_rect(fill = 'black', color = NA),
+  ) +
+  scale_x_continuous(breaks = scales::pretty_breaks())
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
